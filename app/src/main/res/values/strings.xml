@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SamsungGalleryApp</string>
+    <string name="permission_denied">Unable to get Permission</string>
+    <string name="last_name">Last Name</string>
+</resources>

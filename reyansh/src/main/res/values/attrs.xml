@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PinMenu">
+        <attr name="pin_name" format="string" />
+        <attr name="pin_drawable" format="integer" />
+    </declare-styleable>
+
+
+</resources>
