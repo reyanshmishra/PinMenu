@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -18,9 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,24 +36,20 @@ public class PinDialog extends Dialog {
     private int mStatusBarHeight;
     private int mDegreeSteps;
     private int mScreenWidth;
-    private int mRadius = 250;
-    private int mDegree;
-
+    private int mRadius;
+    private int mAngle;
 
     boolean mActionDown = true;
     boolean mDoneAnimating = false;
 
-
     private GradientDrawable mGradientDrawable;
     private PinHolder mPinHolder;
-    private ImageView mIndicator;
-    private TextView mPinName;
     private PinMenu mZoomedView;
     private PinSelectListener mPinSelectListener;
 
 
     public PinDialog(@NonNull Context context) {
-        super(context, android.R.style.Theme_NoTitleBar);
+        super(context, android.R.style.Theme);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_popup);
         setCancelable(true);
@@ -68,30 +60,10 @@ public class PinDialog extends Dialog {
         mGradientDrawable.setShape(GradientDrawable.OVAL);
         mGradientDrawable.setStroke(8, Color.parseColor("#90000000"));
 
-        mIndicator = new ImageView(context);
-        mIndicator.setId(R.id.pin_indicator_id);
-        mIndicator.setImageDrawable(mGradientDrawable);
-
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ReyUtils.dpToPx(context, 48), ReyUtils.dpToPx(context, 48));
-        mIndicator.setLayoutParams(layoutParams);
-
-
-        mPinName = new TextView(context);
-
-        RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPinName.setLayoutParams(paramsText);
-
-        mPinName.setTextSize(48);
-        mPinName.setTypeface(Typeface.DEFAULT_BOLD);
-        mPinName.setId(R.id.pin_name_id);
-        mPinName.setVisibility(View.GONE);
-
-        mPinHolder.addView(mPinName);
-        mPinHolder.addView(mIndicator);
-
         mStatusBarHeight = ReyUtils.getStatusBarHeight(mPinHolder.getContext());
         mScreenWidth = ReyUtils.getScreenWidth();
         mDegreeSteps = mScreenWidth / 180;
+        mRadius = mPinHolder.getMenuRadius();
     }
 
 
@@ -107,7 +79,7 @@ public class PinDialog extends Dialog {
     public boolean passTouchEvent(MotionEvent event, View view) {
         if (mActionDown) {
             mActionDown = false;
-            mPinHolder.drawOverlay(view);
+            mPinHolder.drawOverlay(event.getRawX(), event.getRawY(), view);
             setIndicator(event.getRawX(), event.getRawY());
         }
 
@@ -140,7 +112,7 @@ public class PinDialog extends Dialog {
         for (int i = 0; i < mPinHolder.getChildCount(); i++) {
             View view = mPinHolder.getChildAt(i);
 
-            if (view.getId() == R.id.pin_indicator_id || view.getId() == R.id.pin_name_id) continue;
+            if (view.getId() == R.id.pin_name_id) continue;
 
             a[0] = view.getX();
             a[1] = view.getY();
@@ -153,20 +125,18 @@ public class PinDialog extends Dialog {
                 if (mDoneAnimating) {
                     if (mZoomedView == null) {
                         mZoomedView = (PinMenu) view;
-                        mPinName.setText(mZoomedView.getPinName());
-                        mPinName.setVisibility(View.VISIBLE);
-                        ((ImageView) view).setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
+                        mPinHolder.setPinName(mZoomedView.getPinName());
                         ReyUtils.zoomInView(mZoomedView);
+                        mZoomedView.selected();
                     }
                 }
             } else {
                 if (mZoomedView != null && mZoomedView == view) {
                     ReyUtils.zoomOutView(mZoomedView);
-                    mPinName.setVisibility(View.INVISIBLE);
+                    mPinHolder.setPinName("");
                     mZoomedView = null;
                 }
-
-                ((ImageView) view).setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.SRC_IN);
+                ((PinMenu) view).unSelected();
             }
         }
 
@@ -174,15 +144,11 @@ public class PinDialog extends Dialog {
 
 
     public void setIndicator(float x, float y) {
-        mIndicator.setX(x - mIndicator.getWidth() / 2);
-        mIndicator.setY(y - (mIndicator.getHeight() / 2) - mStatusBarHeight);
-
-        alignPinNameText(mIndicator.getX(), mIndicator.getY());
 
         if (y < mRadius + ReyUtils.getStatusBarHeight(mPinHolder.getContext())) {
-            mDegree = (int) (((x / 2) / mDegreeSteps) + 0);
+            mAngle = (int) (((x / 2) / mDegreeSteps) + 0);
         } else {
-            mDegree = (int) ((x / mDegreeSteps) + 70) * -(1);
+            mAngle = (int) ((x / mDegreeSteps) + 70) * -(1);
         }
 
 
@@ -191,20 +157,18 @@ public class PinDialog extends Dialog {
 
         for (int i = 0; i < child; i++) {
             View view = mPinHolder.getChildAt(i);
-            if (view.getId() == R.id.pin_indicator_id || view.getId() == R.id.pin_name_id) {
+            if (view.getId() == R.id.pin_name_id) {
                 continue;
             }
-            float xI = mIndicator.getX();
-            float yI = mIndicator.getY();
 
-            int xP = ReyUtils.getNewX(mRadius, xI, mDegree);
-            int yP = ReyUtils.getNewY(mRadius, yI, mDegree);
+            int xP = ReyUtils.getNewX(mRadius, x, mAngle);
+            int yP = ReyUtils.getNewY(mRadius, y - mStatusBarHeight, mAngle);
 
-            view.setX(xP);
-            view.setY(yP);
+            view.setX(xP - view.getWidth() / 2);
+            view.setY(yP - view.getHeight() / 2);
 
-            mDegree += 40;
-            animList.add(createShowItemAnimator(view));
+            mAngle += mPinHolder.getAngle();
+            animList.add(createShowItemAnimator(x, y, view));
         }
 
         AnimatorSet animSet = new AnimatorSet();
@@ -235,31 +199,13 @@ public class PinDialog extends Dialog {
         });
     }
 
-    private void alignPinNameText(float x, float y) {
-        int textPosition = (mRadius + mRadius);
 
-        if (textPosition > y) {
-            mPinName.setY(mIndicator.getY() + textPosition);
-        } else {
-            mPinName.setY(mIndicator.getY() - textPosition);
-        }
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mPinName.getLayoutParams();
-
-        if (x < mScreenWidth / 2) {
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        } else {
-            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        }
-        mPinName.setLayoutParams(params);
-    }
-
-
-    private Animator createShowItemAnimator(View item) {
+    private Animator createShowItemAnimator(float x, float y, View item) {
 
         Animator anim = ObjectAnimator.ofPropertyValuesHolder(
                 item,
-                AnimatorUtils.translationX(mIndicator.getX(), item.getX()),
-                AnimatorUtils.translationY(mIndicator.getY(), item.getY())
+                AnimatorUtils.translationX(x, item.getX()),
+                AnimatorUtils.translationY(y, item.getY())
         );
 
         return anim;

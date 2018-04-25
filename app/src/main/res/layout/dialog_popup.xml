@@ -3,48 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    app:pin_holder_draw_over_view="false"
+    app:pin_holder_indicator_border_width="5dp"
+    app:pin_holder_indicator_color="#50000000"
+    app:pin_holder_indicator_radius="20dp"
+    app:pin_holder_menu_radius="100dp"
+    app:pin_holder_overlay_alpha="160"
+    app:pin_holder_overlay_color="@android:color/white">
 
     <com.samsung.gallery.app.PinMenu
         android:id="@+id/one"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/circle"
+        android:elevation="5dp"
+        android:padding="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/pin"
-        android:textColor="#fff"
-        app:pin_name="Save" />
+        android:src="@drawable/ic_close_black_24dp"
+        app:pin_background_color="@color/white"
+        app:pin_name="Cancel"
+        app:pin_selected_color="#BD081C" />
+
 
     <com.samsung.gallery.app.PinMenu
         android:id="@+id/two"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/circle"
+        android:elevation="5dp"
+        android:padding="5dp"
         android:scaleType="centerInside"
         android:src="@drawable/pin"
-        android:textColor="#fff"
-        app:pin_name="Add" />
+        app:pin_background_color="@color/white"
+        app:pin_name="Save"
+        app:pin_selected_color="#BD081C" />
 
     <com.samsung.gallery.app.PinMenu
         android:id="@+id/three"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/circle"
+        android:elevation="5dp"
+        android:padding="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_close_black_24dp"
-        android:textColor="#fff"
-        app:pin_name="Delete" />
+        android:src="@drawable/share_variant"
+        app:pin_background_color="@color/white"
+        app:pin_name="Share"
+        app:pin_selected_color="#BD081C" />
+
 
     <com.samsung.gallery.app.PinMenu
         android:id="@+id/four"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/circle"
+        android:elevation="5dp"
+        android:padding="5dp"
         android:scaleType="centerInside"
         android:src="@drawable/dots_horizontal"
-        android:textColor="#fff"
-        app:pin_name="More" />
+        app:pin_background_color="@color/white"
+        app:pin_name="More"
+        app:pin_selected_color="#BD081C" />
 
 
 </com.samsung.gallery.app.PinHolder>

@@ -1,35 +1,40 @@
 package com.samsung.gallery.app;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PinHolder extends RelativeLayout {
 
     private Paint mOverlayPaint;
-
+    private float mX, mY;
+    private int mStatusBarHeight;
     private Path mPath;
+    private String mPinName;
+    private Paint mIndicatorPaint;
+    private Paint mNamePaint;
+    private int mScreenWidth;
+    int mOverlayColor, mOverlayAlpha = 255, mTextColor = Color.GRAY, mTextSize = ReyUtils.spToPx(24, getContext());
+    private int mMenuRadius = 250;
+
+    private int mIndicatorRadius = 55;
+    private int mIndicatorColor = Color.GRAY;
+    private int mIndicatorBorderWidth = 10;
+    private boolean mDrawOverView = true;
+    private int mAngle = 35;
+
 
     public PinHolder(Context context) {
         super(context);
@@ -37,12 +42,55 @@ public class PinHolder extends RelativeLayout {
     }
 
     public PinHolder(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
         init();
     }
 
     public PinHolder(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PinHolder, defStyleAttr, 0);
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_overlay_color)) {
+            mOverlayColor = a.getColor(R.styleable.PinHolder_pin_holder_overlay_color, 0);
+        }
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_text_color)) {
+            mTextColor = a.getColor(R.styleable.PinHolder_pin_holder_text_color, 0);
+        }
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_text_size)) {
+            mTextSize = a.getDimensionPixelSize(R.styleable.PinHolder_pin_holder_text_size, 35);
+        }
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_overlay_alpha)) {
+            mOverlayAlpha = a.getInt(R.styleable.PinHolder_pin_holder_overlay_alpha, 255);
+        }
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_menu_radius)) {
+            mMenuRadius = a.getDimensionPixelSize(R.styleable.PinHolder_pin_holder_menu_radius, 0);
+        }
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_draw_over_view)) {
+            mDrawOverView = a.getBoolean(R.styleable.PinHolder_pin_holder_draw_over_view, true);
+        }
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_indicator_border_width)) {
+            mIndicatorBorderWidth = a.getDimensionPixelSize(R.styleable.PinHolder_pin_holder_indicator_border_width, ReyUtils.spToPx(5, getContext()));
+        }
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_indicator_color)) {
+            mIndicatorColor = a.getColor(R.styleable.PinHolder_pin_holder_indicator_color, Color.GRAY);
+        }
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_indicator_radius)) {
+            mIndicatorRadius = a.getDimensionPixelSize(R.styleable.PinHolder_pin_holder_indicator_radius, 18);
+        }
+
+        if (a.hasValue(R.styleable.PinHolder_pin_holder_angle)) {
+            mAngle = a.getInt(R.styleable.PinHolder_pin_holder_angle, 35);
+        }
+
+
+        a.recycle();
+
         init();
     }
 
@@ -54,15 +102,33 @@ public class PinHolder extends RelativeLayout {
 
     private void init() {
         setWillNotDraw(false);
+        mPath = new Path();
+
         mOverlayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mOverlayPaint.setAntiAlias(true);
-        mOverlayPaint.setColor(Color.parseColor("#80ffffff"));
-        mPath = new Path();
+        mOverlayPaint.setColor(mOverlayColor);
+        mOverlayPaint.setAlpha(mOverlayAlpha);
+
+        mIndicatorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mIndicatorPaint.setColor(mIndicatorColor);
+        mIndicatorPaint.setStyle(Paint.Style.STROKE);
+        mIndicatorPaint.setStrokeWidth(mIndicatorBorderWidth);
+
+
+        mNamePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+        mNamePaint.setTypeface(Typeface.DEFAULT_BOLD);
+        mNamePaint.setColor(mTextColor);
+        mNamePaint.setTextSize(mTextSize);
+        mNamePaint.setLinearText(true);
+        mNamePaint.setTextAlign(Paint.Align.RIGHT);
+        mStatusBarHeight = ReyUtils.getStatusBarHeight(getContext());
+        mScreenWidth = ReyUtils.getScreenWidth();
     }
 
-    public void drawOverlay(View view) {
+    public void drawOverlay(float x, float y, View view) {
+        mX = x;
+        mY = y - mStatusBarHeight;
         mPath.reset();
-        mOverlayPaint.setAntiAlias(true);
         mPath.setFillType(Path.FillType.EVEN_ODD);
 
         mPath.moveTo(0, 0);
@@ -70,15 +136,14 @@ public class PinHolder extends RelativeLayout {
         mPath.lineTo(ReyUtils.getScreenWidth(), ReyUtils.getScreenHeight());
         mPath.lineTo(0, ReyUtils.getScreenHeight());
         mPath.close();
-        if (view == null) {
-            invalidate();
-            return;
+
+        if (mDrawOverView) {
+            mPath.moveTo(view.getX(), view.getY());
+            mPath.lineTo(view.getX() + view.getWidth(), view.getY());
+            mPath.lineTo(view.getX() + view.getWidth(), view.getY() + view.getHeight());
+            mPath.lineTo(view.getX(), view.getY() + view.getHeight());
+            mPath.close();
         }
-        mPath.moveTo(view.getX(), view.getY());
-        mPath.lineTo(view.getX() + view.getWidth(), view.getY());
-        mPath.lineTo(view.getX() + view.getWidth(), view.getY() + view.getHeight());
-        mPath.lineTo(view.getX(), view.getY() + view.getHeight());
-        mPath.close();
         invalidate();
     }
 
@@ -88,7 +153,41 @@ public class PinHolder extends RelativeLayout {
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         canvas.drawPath(mPath, mOverlayPaint);
         canvas.drawPath(mPath, mOverlayPaint);
+        canvas.drawCircle(mX, mY, mIndicatorRadius, mIndicatorPaint);
+        drawText(canvas);
     }
 
+    public void setPinName(String pinName) {
+        mPinName = pinName;
+        invalidate();
+    }
+
+
+    private void drawText(Canvas canvas) {
+        int textPosition = (mMenuRadius + mMenuRadius);
+        float yPos;
+        if (textPosition > mY) {
+            yPos = mY + textPosition;
+        } else {
+            yPos = mY - textPosition;
+        }
+        Rect textBounds = new Rect();
+        if (mPinName != null) {
+            mNamePaint.getTextBounds(mPinName, 0, mPinName.length(), textBounds);
+            if (mX > mScreenWidth / 2) {
+                canvas.drawText(mPinName, textBounds.width(), yPos, mNamePaint);
+            } else {
+                canvas.drawText(mPinName, ReyUtils.getScreenWidth(), yPos, mNamePaint);
+            }
+        }
+    }
+
+    public int getMenuRadius() {
+        return mMenuRadius;
+    }
+
+    public int getAngle() {
+        return mAngle;
+    }
 }
 

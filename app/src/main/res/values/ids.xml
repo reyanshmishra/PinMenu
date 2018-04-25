@@ -2,7 +2,6 @@
 <resources>
 
 
-    <item name="pin_indicator_id" type="id"/>
     <item name="pin_name_id" type="id"/>
 
 </resources>

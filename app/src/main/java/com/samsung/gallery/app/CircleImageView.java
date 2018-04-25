@@ -1,3 +1,4 @@
+/*
 package com.samsung.gallery.app;
 
 import android.content.Context;
@@ -182,9 +183,11 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         invalidate();
     }
 
-    /**
+    */
+/**
      * @deprecated Use {@link #setBorderColor(int)} instead
-     */
+     *//*
+
     @Deprecated
     public void setBorderColorResource(@ColorRes int borderColorRes) {
         setBorderColor(getContext().getResources().getColor(borderColorRes));
@@ -208,37 +211,43 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
         setCircleBackgroundColor(getContext().getResources().getColor(circleBackgroundRes));
     }
 
-    /**
+    */
+/**
      * Return the color drawn behind the circle-shaped drawable.
      *
      * @return The color drawn behind the drawable
      * @deprecated Use {@link #getCircleBackgroundColor()} instead.
-     */
+     *//*
+
     @Deprecated
     public int getFillColor() {
         return getCircleBackgroundColor();
     }
 
-    /**
+    */
+/**
      * Set a color to be drawn behind the circle-shaped drawable. Note that
      * this has no effect if the drawable is opaque or no drawable is set.
      *
      * @param fillColor The color to be drawn behind the drawable
      * @deprecated Use {@link #setCircleBackgroundColor(int)} instead.
-     */
+     *//*
+
     @Deprecated
     public void setFillColor(@ColorInt int fillColor) {
         setCircleBackgroundColor(fillColor);
     }
 
-    /**
+    */
+/**
      * Set a color to be drawn behind the circle-shaped drawable. Note that
      * this has no effect if the drawable is opaque or no drawable is set.
      *
      * @param fillColorRes The color resource to be resolved to a color and
      *                     drawn behind the drawable
      * @deprecated Use {@link #setCircleBackgroundColorResource(int)} instead.
-     */
+     *//*
+
     @Deprecated
     public void setFillColorResource(@ColorRes int fillColorRes) {
         setCircleBackgroundColorResource(fillColorRes);
@@ -457,4 +466,4 @@ public class CircleImageView extends android.support.v7.widget.AppCompatImageVie
 
     }
 
-}
+}*/

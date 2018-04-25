@@ -255,30 +255,6 @@ public class PinDialog extends Dialog {
         return anim;
     }
 
-    public void addRecyclerView(RecyclerView recyclerView) {
-        recyclerView.addOnItemTouchListener(mOnItemTouchListener);
-    }
-
-    RecyclerView.OnItemTouchListener mOnItemTouchListener = new RecyclerView.OnItemTouchListener() {
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            if (isShowing()) {
-                return true;
-            }
-            gestureDetector.onTouchEvent(e);
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            passTouchEvent(e, child);
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        }
-    };
 
     final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
         public void onLongPress(MotionEvent e) {
