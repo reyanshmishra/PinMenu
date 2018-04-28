@@ -18,6 +18,18 @@ import android.widget.RelativeLayout;
 
 public class PinHolder extends RelativeLayout {
 
+
+    private static final int DEFAULT_OVERLAY_COLOR = Color.parseColor("#80ffffff");
+    private static final int DEFAULT_TEXT_COLOR = Color.GRAY;
+    private static final int DEFAULT_TEXT_SIZE = 80;
+
+    private static final int DEFAULT_MENU_RADIUS = 300;
+    private static final int DEFAULT_INDICATOR_RADIUS = 50;
+    private static final int DEFAULT_INDICATOR_COLOR = Color.GRAY;
+    private static final int DEFAULT_INDICATOR_WIDTH = 10;
+    private static final int DEFAULT_MENU_ANGLE = 40;
+
+
     private Paint mOverlayPaint;
     private float mX, mY;
     private int mStatusBarHeight;
@@ -26,14 +38,17 @@ public class PinHolder extends RelativeLayout {
     private Paint mIndicatorPaint;
     private Paint mNamePaint;
     private int mScreenWidth;
-    int mOverlayColor, mOverlayAlpha = 255, mTextColor = Color.GRAY, mTextSize = ReyUtils.spToPx(24, getContext());
-    private int mMenuRadius = 250;
+    private int mOverlayColor = DEFAULT_OVERLAY_COLOR;
+    private int mTextColor = DEFAULT_TEXT_COLOR;
+    private int mTextSize = DEFAULT_TEXT_SIZE;
 
-    private int mIndicatorRadius = 55;
-    private int mIndicatorColor = Color.GRAY;
-    private int mIndicatorBorderWidth = 10;
+
+    private int mMenuRadius = DEFAULT_MENU_RADIUS;
+    private int mIndicatorRadius = DEFAULT_INDICATOR_RADIUS;
+    private int mIndicatorColor = DEFAULT_INDICATOR_COLOR;
+    private int mIndicatorBorderWidth = DEFAULT_INDICATOR_WIDTH;
     private boolean mDrawOverView = true;
-    private int mAngle = 35;
+    private int mAngle = DEFAULT_MENU_ANGLE;
 
 
     public PinHolder(Context context) {
@@ -62,10 +77,6 @@ public class PinHolder extends RelativeLayout {
             mTextSize = a.getDimensionPixelSize(R.styleable.PinHolder_pin_holder_text_size, 35);
         }
 
-        if (a.hasValue(R.styleable.PinHolder_pin_holder_overlay_alpha)) {
-            mOverlayAlpha = a.getInt(R.styleable.PinHolder_pin_holder_overlay_alpha, 255);
-        }
-
         if (a.hasValue(R.styleable.PinHolder_pin_holder_menu_radius)) {
             mMenuRadius = a.getDimensionPixelSize(R.styleable.PinHolder_pin_holder_menu_radius, 0);
         }
@@ -88,7 +99,6 @@ public class PinHolder extends RelativeLayout {
             mAngle = a.getInt(R.styleable.PinHolder_pin_holder_angle, 35);
         }
 
-
         a.recycle();
 
         init();
@@ -107,7 +117,6 @@ public class PinHolder extends RelativeLayout {
         mOverlayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mOverlayPaint.setAntiAlias(true);
         mOverlayPaint.setColor(mOverlayColor);
-        mOverlayPaint.setAlpha(mOverlayAlpha);
 
         mIndicatorPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mIndicatorPaint.setColor(mIndicatorColor);
@@ -137,7 +146,7 @@ public class PinHolder extends RelativeLayout {
         mPath.lineTo(0, ReyUtils.getScreenHeight());
         mPath.close();
 
-        if (mDrawOverView) {
+        if (mDrawOverView && view != null) {
             mPath.moveTo(view.getX(), view.getY());
             mPath.lineTo(view.getX() + view.getWidth(), view.getY());
             mPath.lineTo(view.getX() + view.getWidth(), view.getY() + view.getHeight());

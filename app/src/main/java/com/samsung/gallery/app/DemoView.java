@@ -35,7 +35,6 @@ public class DemoView extends View {
 
 
     public void d(Context context) {
-
         mPath = new Path();
         mPath.addCircle(40, 40, 45, Path.Direction.CCW);
         mPath.addCircle(80, 80, 45, Path.Direction.CCW);

@@ -7,28 +7,23 @@
         <attr name="pin_src" format="integer" />
         <attr name="pin_background_color" format="color" />
         <attr name="pin_selected_color" format="color" />
+        <attr name="pin_icon_color" format="color" />
+        <attr name="pin_selected_icon_color" format="color" />
 
     </declare-styleable>
 
-
     <declare-styleable name="PinHolder">
-
+        <attr name="pin_holder_text_type_face" format="integer" />
         <attr name="pin_holder_overlay_color" format="color" />
         <attr name="pin_holder_text_color" format="color" />
-        <attr name="pin_holder_overlay_alpha" format="integer" />
-
         <attr name="pin_holder_text_size" format="dimension" />
         <attr name="pin_holder_menu_radius" format="dimension" />
-
         <attr name="pin_holder_indicator_radius" format="dimension" />
         <attr name="pin_holder_indicator_color" format="color" />
         <attr name="pin_holder_indicator_alpha" format="dimension" />
         <attr name="pin_holder_indicator_border_width" format="dimension" />
         <attr name="pin_holder_angle" format="integer" />
-
         <attr name="pin_holder_draw_over_view" format="boolean" />
-
-
     </declare-styleable>
 
 </resources>

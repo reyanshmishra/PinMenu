@@ -73,24 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mCompositeDisposable = new CompositeDisposable();
         getSupportActionBar().hide();
         initImageLoader();
-        /**
-         *First thing we need to check get the permission from the user to access his content if the version is 6 greater.
-         */
-//        int readAccountsPermission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        /*if (Utils.isMarshmello()) {
-            if (readAccountsPermission != PackageManager.PERMISSION_GRANTED) {
-                //We do not have the permission ask for it.
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, Utils.READ_EXTERNAL_STORAGE_PERMISSION);
-            } else {
-                //we have the permission go ahead and fetch the content.
-                fetchBucketsWithImageInTheme();
-            }
-        } else {
-            //we have the permission go ahead and fetch the content cause android version is less then 6.
-            fetchBucketsWithImageInTheme();
-        }*/
-
+    
         /**
          *Tell ButterKnife to bind the views.
          */
@@ -107,70 +90,16 @@ public class MainActivity extends AppCompatActivity {
         mPinDialog = new PinDialog(this);
         mPinDialog.setPinSelectListener((pinMenu) -> Toast.makeText(mContext, "" + pinMenu.getPinName(), Toast.LENGTH_SHORT).show());
         mPinDialog.addPinListener(mRecyclerView);
-        /**
-         *ItemTouchListener for recyclerview to intercept the touch events.
-         */
-//        mRecyclerView.addOnItemTouchListener(mOnItemTouchListener);
 
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == Utils.READ_EXTERNAL_STORAGE_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //User loves you app go ahead have fun.
-                fetchBucketsWithImageInTheme();
-            } else {
-                //User doesn't trust you so mission abort finish the activity.
-                Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //Don't keep any references clean the garbage.
         mCompositeDisposable.clear();
         mCompositeDisposable.dispose();
     }
-
-
-    /**
-     * RxJava is here again.
-     */
-    private void fetchBucketsWithImageInTheme() {
-
-
-        mCompositeDisposable.add(Observable.fromCallable(() -> Utils.fetchBucketsList(mContext))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<ArrayList<BucketModel>>() {
-                    @Override
-                    public void onNext(ArrayList<BucketModel> data) {
-                        mBucketList = data;
-                        mBucketAdapter.updateData(data);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("TAG-RX", e.getMessage() + " " + e.getCause());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
-    }
-
-
-    /**
-     * Initialise imagelaoder before using.
-     */
 
 
     private void initImageLoader() {
@@ -183,11 +112,4 @@ public class MainActivity extends AppCompatActivity {
         L.writeLogs(false);
     }
 
-
-    /**
-     * On LongClick on Recyclerview Item show the dialog with the images in them.
-     */
-    public void onLongClick(int adapterPosition, View v) {
-        Log.d("AAAA", "onLongClick: " + v.getX() + " Y:" + v.getY() + " w " + v.getWidth() + " h:" + v.getHeight());
-    }
 }

@@ -229,12 +229,18 @@ public class PinDialog extends Dialog {
 
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
         }
     };
 
     final GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+        @Override
         public void onLongPress(MotionEvent e) {
             show();
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
         }
     });
 
@@ -243,10 +249,7 @@ public class PinDialog extends Dialog {
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.addOnItemTouchListener(mOnItemTouchListener);
         } else {
-            view.setOnLongClickListener(v -> {
-                show();
-                return true;
-            });
+            
         }
     }
 }

@@ -60,10 +60,6 @@ public class BucketAdapter extends RecyclerView.Adapter<BucketAdapter.ItemHolder
             super(itemView);
             mBucketImageView = itemView.findViewById(R.id.bucket_image_image_view);
             mBucketNameTextView = itemView.findViewById(R.id.bucket_name_text_view);
-            itemView.setOnLongClickListener(v -> {
-                mMainActivity.onLongClick(getAdapterPosition(),v);
-                return true;
-            });
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(mMainActivity, BucketImageActivity.class);
                 intent.putExtra("BUCKET_ID", mBucketList.get(getAdapterPosition()).mBucketName);

@@ -3,13 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:pin_holder_draw_over_view="false"
-    app:pin_holder_indicator_border_width="5dp"
-    app:pin_holder_indicator_color="#50000000"
-    app:pin_holder_indicator_radius="20dp"
-    app:pin_holder_menu_radius="100dp"
-    app:pin_holder_overlay_alpha="160"
-    app:pin_holder_overlay_color="@android:color/white">
+>
 
     <com.samsung.gallery.app.PinMenu
         android:id="@+id/one"
@@ -19,9 +13,7 @@
         android:padding="5dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_close_black_24dp"
-        app:pin_background_color="@color/white"
-        app:pin_name="Cancel"
-        app:pin_selected_color="#BD081C" />
+        app:pin_name="Cancel" />
 
 
     <com.samsung.gallery.app.PinMenu
