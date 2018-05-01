@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.reyanshmishra.pinmenu.PinMenuHolder xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:pin_holder_draw_over_view="true">
+
+    <com.reyanshmishra.pinmenu.PinMenu
+        android:id="@+id/one"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:elevation="5dp"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_close_black_24dp"
+        app:pin_name="Cancel" />
+
+    <com.reyanshmishra.pinmenu.PinMenu
+        android:id="@+id/two"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:elevation="5dp"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/pin"
+        app:pin_background_color="@color/white"
+        app:pin_name="Save"
+        app:pin_selected_color="#BD081C" />
+
+    <com.reyanshmishra.pinmenu.PinMenu
+        android:id="@+id/three"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:elevation="5dp"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/share_variant"
+        app:pin_background_color="@color/white"
+        app:pin_name="Share"
+        app:pin_selected_color="#BD081C" />
+
+
+    <com.reyanshmishra.pinmenu.PinMenu
+        android:id="@+id/four"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:elevation="5dp"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/dots_horizontal"
+        app:pin_background_color="@color/white"
+        app:pin_name="More"
+        app:pin_selected_color="#BD081C" />
+
+</com.reyanshmishra.pinmenu.PinMenuHolder>

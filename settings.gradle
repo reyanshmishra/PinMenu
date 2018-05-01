@@ -1,1 +1,2 @@
-include ':app', ':reyansh'
+include ':app', ':reyansh', ':pinmenu'
+rootProject.name = 'PinLibrary'

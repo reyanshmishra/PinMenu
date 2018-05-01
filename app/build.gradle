@@ -38,16 +38,8 @@ dependencies {
 
     //RxJava Hell a beautiful library replaces background threads classes and a lot of confusion in them like asynctask
     //Handlers n what not does a lot of stuff with only few lines of code.
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.7'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-
-    //UIL library to load the images its alternative is picasso and fresco and many more
-    // but I prefer UIL and Picasso over any other.
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
-    //Butter knife library for better, clean and understandable code easy to use.
-    // One liner codes for views initialisation and listeners.
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'
+    compile project(path: ':pinmenu')
 }
