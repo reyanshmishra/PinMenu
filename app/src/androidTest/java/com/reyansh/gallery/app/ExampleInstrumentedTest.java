@@ -1,4 +1,4 @@
-package com.samsung.gallery.app;
+package com.reyansh.gallery.app;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
