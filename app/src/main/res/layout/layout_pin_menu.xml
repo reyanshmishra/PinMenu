@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:pin_holder_draw_over_view="true">
+    app:pin_holder_draw_over_view="true"
+    app:pin_holder_overlay_color="#90ffffff">
 
     <com.reyanshmishra.pinmenu.PinMenu
         android:id="@+id/one"
@@ -13,7 +14,9 @@
         android:padding="5dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_close_black_24dp"
-        app:pin_name="Cancel" />
+        app:pin_background_color="@color/white"
+        app:pin_name="Cancel"
+        app:pin_selected_color="#BD081C" />
 
     <com.reyanshmishra.pinmenu.PinMenu
         android:id="@+id/two"

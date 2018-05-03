@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.github.dcendents.android-maven'
+group='reyansh'
+version='1.0'
 android {
     compileSdkVersion 27
 
@@ -23,12 +25,36 @@ android {
     }
 
 }
+ext {
+    bintrayRepo = 'PinMenu' // your repo name
+    bintrayName = 'pinmenu' // has to be same as your library module name
+    publishedGroupId = 'com.reyanshmishra' // your module package name
+    libraryName = 'PinMenu'
+    artifact = 'pinmenu' // has to be same as your library module name
+    libraryDescription = 'A set of methods used to manipulate time object'
+    siteUrl = 'https://github.com/reyanshmishra/PinMenu'
+    gitUrl = 'https://github.com/reyanshmishra/PinMenu.git'
+    libraryVersion = '1.0'
+    developerId = 'reyansh'
+    developerName = 'Reyansh'
+    developerEmail = 'reyanshmishra@outlook.com'
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
 
+configurations {
+    javadocDeps
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:support-annotations:22.2.0'
+    javadocDeps 'com.android.support:support-annotations:22.2.0'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/installv.gradle'
+apply from: 'https://raw.githubusercontent.com/numetriclabz/jcenter/master/bintrayv.gradle'

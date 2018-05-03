@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/PinLibrary.iml" filepath="$PROJECT_DIR$/PinLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pinmenu/pinmenu.iml" filepath="$PROJECT_DIR$/pinmenu/pinmenu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/reyansh/reyansh.iml" filepath="$PROJECT_DIR$/reyansh/reyansh.iml" />
     </modules>
   </component>
 </project>
