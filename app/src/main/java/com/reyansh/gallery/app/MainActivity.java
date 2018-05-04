@@ -37,12 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPinDialog = new PinDialog(this);
         mPinDialog.setContentView(R.layout.layout_pin_menu);
-        mPinDialog.setPinSelectListener(new PinSelectListener() {
-            @Override
-            public void pinSelected(PinMenu pinMenu) {
-                Toast.makeText(mContext, "" + pinMenu.getPinName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        mPinDialog.setPinSelectListener(pinMenu -> Toast.makeText(mContext, "" + pinMenu.getPinName(), Toast.LENGTH_SHORT).show());
         mPinDialog.addToRecyclerView(mRecyclerView);
 
     }

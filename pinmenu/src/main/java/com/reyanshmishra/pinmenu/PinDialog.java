@@ -78,7 +78,9 @@ public class PinDialog extends Dialog {
         super.onCreate(savedInstanceState);
         ViewGroup view = this.findViewById(android.R.id.content);
         View child = view.getChildAt(0);
-        if (!(child instanceof PinMenuHolder)) {
+        if (child == null) {
+            throw new ClassCastException("Set View");
+        } else if (!(child instanceof PinMenuHolder)) {
             throw new ClassCastException("Root view has to be PinHolder");
         } else {
             mPinMenuHolder = (PinMenuHolder) child;

@@ -18,17 +18,6 @@
         app:pin_name="Cancel"
         app:pin_selected_color="#BD081C" />
 
-    <com.reyanshmishra.pinmenu.PinMenu
-        android:id="@+id/two"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:elevation="5dp"
-        android:padding="5dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/pin"
-        app:pin_background_color="@color/white"
-        app:pin_name="Save"
-        app:pin_selected_color="#BD081C" />
 
     <com.reyanshmishra.pinmenu.PinMenu
         android:id="@+id/three"
