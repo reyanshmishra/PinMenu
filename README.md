@@ -73,6 +73,7 @@ layout_pin_menu.xml
 </com.reyanshmishra.pinmenu.PinMenuHolder>
     
 ```
+<img src="https://i.imgur.com/X0fgfmk.png" width=900 height=625>
 
 ```Java
 
