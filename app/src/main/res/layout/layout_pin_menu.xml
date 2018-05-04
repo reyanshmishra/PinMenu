@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:pin_holder_draw_over_view="true"
-    app:pin_holder_overlay_color="#90ffffff">
+    app:pin_holder_overlay_color="#40ffffff">
 
     <com.reyanshmishra.pinmenu.PinMenu
         android:id="@+id/one"
