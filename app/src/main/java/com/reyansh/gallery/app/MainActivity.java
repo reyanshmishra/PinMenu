@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.reyanshmishra.pinmenu.PinDialog;
+import com.reyanshmishra.pinmenu.PinMenu;
+import com.reyanshmishra.pinmenu.PinSelectListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
 
         mPinDialog = new PinDialog(this);
         mPinDialog.setContentView(R.layout.layout_pin_menu);
-        mPinDialog.setPinSelectListener((pinMenu) -> Toast.makeText(mContext, "" + pinMenu.getPinName(), Toast.LENGTH_SHORT).show());
+        mPinDialog.setPinSelectListener(new PinSelectListener() {
+            @Override
+            public void pinSelected(PinMenu pinMenu) {
+                Toast.makeText(mContext, "" + pinMenu.getPinName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         mPinDialog.addToRecyclerView(mRecyclerView);
 
     }
